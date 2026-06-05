@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  
+  --color-physio-purple: #6b21cf;
+  --color-physio-orange: #ef7d31;
+  --color-physio-bg: #fcfaff;
+  --color-physio-surface: #ffffff;
+  --color-physio-gray: #f3f0f6;
+}
+
+@layer utilities {
+  .glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  .glass-dark {
+    background: rgba(15, 12, 25, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Custom device framing styles */
+.phone-preview-shadow {
+  box-shadow: 0 25px 50px -12px rgba(107, 33, 207, 0.15), 0 0 0 12px rgba(0, 0, 0, 0.85);
+}
+

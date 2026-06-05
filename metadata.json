@@ -1,0 +1,6 @@
+{
+  "name": "Fisiohome Premium App Prototype",
+  "description": "Interactive Apple iOS-inspired Fisiohome mobile application simulator and professional health-tech UX design playbook.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
