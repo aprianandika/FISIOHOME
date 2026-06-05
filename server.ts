@@ -26,33 +26,34 @@ async function startServer() {
   } else {
     const distPath = path.join(process.cwd(), "dist");
 
-    // Pre-static Middleware: Ensure correct Content-Type response headers for Javascript & CSS scripts
-    app.use((req, res, next) => {
-      const cleanUrl = req.url.split('?')[0];
-      if (cleanUrl.endsWith('.js') || cleanUrl.endsWith('.mjs')) {
-        res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
-      } else if (cleanUrl.endsWith('.css')) {
-        res.setHeader('Content-Type', 'text/css; charset=utf-8');
-      }
-      next();
-    });
-
     // Handle production static files serving with customized exact MIME headers
     app.use(express.static(distPath, {
       dotfiles: 'ignore',
       etag: true,
       index: false,
       setHeaders: (res, filePath) => {
-        if (filePath.endsWith('.js') || filePath.endsWith('.mjs')) {
+        const lowerPath = filePath.toLowerCase();
+        if (lowerPath.endsWith('.js') || lowerPath.endsWith('.mjs')) {
           res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
-        } else if (filePath.endsWith('.css')) {
+        } else if (lowerPath.endsWith('.css')) {
           res.setHeader('Content-Type', 'text/css; charset=utf-8');
+        } else if (lowerPath.endsWith('.png')) {
+          res.setHeader('Content-Type', 'image/png');
+        } else if (lowerPath.endsWith('.jpg') || lowerPath.endsWith('.jpeg')) {
+          res.setHeader('Content-Type', 'image/jpeg');
+        } else if (lowerPath.endsWith('.svg')) {
+          res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
         }
       }
     }));
 
     // Serve SPA index file
-    app.get('*', (req, res) => {
+    app.get('*', (req, res, next) => {
+      const parsedPath = path.parse(req.path);
+      if (parsedPath.ext && parsedPath.ext !== '.html') {
+        res.status(404).send('Not Found');
+        return;
+      }
       res.sendFile(path.join(distPath, "index.html"));
     });
   }

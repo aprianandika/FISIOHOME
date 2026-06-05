@@ -48,7 +48,6 @@ import {
 
 import { Screen, Therapist, Booking, NotificationItem, RecoveryStage, UserProfile } from './types';
 import { mockUserProfile, mockTherapists, mockBookings, mockNotifications, mockRecoveryStages } from './data';
-import { ScreenSpecUI } from './components/ScreenSpecUI';
 
 export default function App() {
   // Mobile Simulator state
@@ -218,122 +217,16 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col font-sans transition-colors duration-300">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex justify-center font-sans">
       
-      {/* Platform Branding Ribbon */}
-      <header className="bg-[#6b21cf] text-white px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4 border-b border-white/10 shrink-0">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg shadow-black/20">
-            <Activity className="text-[#6b21cf] w-6 h-6 animate-pulse" />
-          </div>
-          <div>
-            <h1 className="font-display font-bold text-2xl tracking-tight flex items-center gap-2">
-              Fisiohome <span className="text-xs bg-orange-500 font-semibold text-white px-2 py-0.5 rounded-full uppercase tracking-wider">Premium Care</span>
-            </h1>
-            <p className="text-xs text-purple-200">Redesign Simulator Platform & Product Specification Playbook</p>
-          </div>
-        </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="text-xs bg-white/10 px-3 py-1.5 rounded-lg font-mono flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 bg-green-400 rounded-full animate-ping"></span>
-            Simulator Live Status: Ready
-          </span>
-          <button 
-            onClick={() => {
-              setCurrentScreen('splash');
-              setActiveTab('home');
-              setPainLevel(3);
-              setBookingDate(23);
-              setBookingTime('01:00 PM');
-            }} 
-            className="text-xs bg-orange-500 hover:bg-orange-600 transition-colors px-4 py-1.5 font-semibold text-white rounded-lg flex items-center gap-1.5 shadow-md active:scale-95 duration-100"
-          >
-            <RefreshCw className="w-3.5 h-3.5" /> Reset Flow
-          </button>
-        </div>
-      </header>
-
-      {/* Main Workspace Frame */}
-      <div className="flex-1 flex flex-col lg:flex-row min-h-0 w-full">
+      {/* Centered clean container that acts as the real application */}
+      <div className="w-full max-w-md bg-[#fcfaff] text-slate-900 min-h-screen flex flex-col relative shadow-2xl dark:bg-slate-900 border-x border-slate-200 dark:border-slate-800 overflow-hidden select-none">
         
-        {/* LEFT COLUMN: Screen Quick Switcher Navigation Drawer */}
-        <aside className="w-full lg:w-80 bg-white dark:bg-slate-900 border-b lg:border-b-0 lg:border-r border-slate-200 dark:border-slate-800 p-5 overflow-y-auto shrink-0 space-y-4">
-          <div>
-            <h2 className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest block mb-1">
-              UX Flow Navigator
-            </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Jump to any of the 14 required screens instantly to audit design specs.</p>
-          </div>
+        {/* Active Screen Viewport */}
+        <div className="flex-1 overflow-y-auto no-scrollbar pb-24 relative flex flex-col bg-[#fcfaff]">
+          
+          <AnimatePresence mode="wait">
 
-          <div className="space-y-1.5">
-            {[
-              { id: 'splash', label: '1. Splash Screen', isCurrent: currentScreen === 'splash' },
-              { id: 'onboarding', label: '2. Onboarding Flow', isCurrent: currentScreen === 'onboarding' },
-              { id: 'login', label: '3. Authentication Form', isCurrent: currentScreen === 'login' },
-              { id: 'dashboard', label: '4. Home Dashboard', isCurrent: currentScreen === 'dashboard' },
-              { id: 'discovery', label: '5. Therapist Discovery', isCurrent: currentScreen === 'discovery' },
-              { id: 'detail', label: '6. Therapist Detail', isCurrent: currentScreen === 'detail' },
-              { id: 'consultation', label: '7. Online Consultation', isCurrent: currentScreen === 'consultation' },
-              { id: 'booking', label: '8. Booking Request', isCurrent: currentScreen === 'booking' },
-              { id: 'payment', label: '9. Payments Checkout', isCurrent: currentScreen === 'payment' },
-              { id: 'tracking', label: '10. Tracking Therapist', isCurrent: currentScreen === 'tracking' },
-              { id: 'progress', label: '11. Recovery Progress', isCurrent: currentScreen === 'progress' },
-              { id: 'history', label: '12. Session History', isCurrent: currentScreen === 'history' },
-              { id: 'notifications', label: '13. Notifications Feed', isCurrent: currentScreen === 'notifications' },
-              { id: 'profile', label: '14. User Profile', isCurrent: currentScreen === 'profile' },
-            ].map((scr) => (
-              <button
-                key={scr.id}
-                onClick={() => {
-                  setCurrentScreen(scr.id as Screen);
-                  if (['dashboard', 'discovery', 'history', 'profile'].includes(scr.id)) {
-                    setActiveTab(scr.id as any);
-                  }
-                }}
-                className={`w-full text-left px-3.5 py-2.5 text-xs font-semibold rounded-xl flex items-center justify-between transition-all duration-200 ${
-                  scr.isCurrent
-                    ? 'bg-violet-600 text-white shadow-md shadow-violet-500/20'
-                    : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
-                }`}
-              >
-                <span>{scr.label}</span>
-                {scr.isCurrent && <ChevronRight className="w-4 h-4 text-white" />}
-              </button>
-            ))}
-          </div>
-
-          <div className="bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-100 dark:border-slate-800 space-y-2">
-            <span className="text-[10px] font-bold text-orange-500 dark:text-orange-400 uppercase tracking-wider block">Interactive Guide</span>
-            <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
-              The clinician database is fully searchable. Fill out patient details, complete credit bookings, configure pain ranges on sliders, and experience continuous transitions!
-            </p>
-          </div>
-        </aside>
-
-        {/* CENTER COLUMN: Physical iPhone Frame Simulator Viewport */}
-        <section className="flex-1 flex items-center justify-center p-4 lg:p-8 overflow-y-auto bg-slate-50 dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800">
-          <div className="relative w-full max-w-[390px] h-[820px] rounded-[50px] shadow-2xl phone-preview-shadow border-[12px] border-slate-900 bg-[#fcfaff] flex flex-col overflow-hidden select-none">
-            
-            {/* Top iOS Notch & Status Bar */}
-            <div className="absolute top-0 inset-x-0 h-11 bg-transparent flex justify-between items-center px-8 z-50 text-xs font-semibold select-none">
-              <span className="text-slate-800 dark:text-white drop-shadow">17:03</span>
-              {/* Dynamic Lens Notch */}
-              <div className="w-[110px] h-[28px] bg-black rounded-b-2xl shrink-0 absolute left-1/2 -translate-x-1/2 top-0 flex items-center justify-around px-2 text-[9px] text-white">
-                <span className="w-2.5 h-2.5 rounded-full bg-slate-900 border border-slate-800"></span>
-                <span className="w-1.5 h-1.5 rounded-full bg-blue-900"></span>
-              </div>
-              <div className="flex items-center gap-1.5 text-slate-800 dark:text-white drop-shadow">
-                <span className="text-[9px]">LTE</span>
-                <div className="w-5 h-2.5 bg-slate-800 dark:bg-white rounded-sm p-0.5 flex items-center">
-                  <div className="w-full h-full bg-slate-100 dark:bg-slate-900 rounded-sm"></div>
-                </div>
-              </div>
-            </div>
-
-            {/* Simulated Phone Active Screen viewport */}
-            <div className="flex-1 overflow-y-auto no-scrollbar pt-11 pb-20 relative flex flex-col bg-[#fcfaff] text-slate-900">
-              
-              <AnimatePresence mode="wait">
                 
                 {/* 1. SPLASH SCREEN */}
                 {currentScreen === 'splash' && (
@@ -1246,10 +1139,15 @@ export default function App() {
                     exit={{ opacity: -20 }}
                     className="p-5 space-y-6"
                   >
-                    <div className="space-y-1">
-                      <span className="text-[10px] font-bold text-purple-600 uppercase tracking-wider block">Klinis Medis Alex</span>
-                      <h3 className="font-display font-extrabold text-xl text-slate-900">Progres Pemulihan</h3>
-                      <p className="text-xs text-slate-400 leading-normal font-sans">Pasca-Rekonstruksi ACL • Minggu ke-6 dari 12</p>
+                    <div className="space-y-1.5">
+                      <div className="flex items-center gap-3">
+                        <button onClick={() => setCurrentScreen('dashboard')} className="text-slate-600 focus:outline-none">
+                          <ChevronLeft className="w-6 h-6" />
+                        </button>
+                        <h3 className="font-display font-extrabold text-xl text-slate-900">Progres Pemulihan</h3>
+                      </div>
+                      <span className="text-[10px] font-bold text-purple-600 uppercase tracking-wider block pl-9">Klinis Medis Alex</span>
+                      <p className="text-xs text-slate-400 leading-normal font-sans pl-9">Pasca-Rekonstruksi ACL • Minggu ke-6 dari 12</p>
                     </div>
 
                     {/* Recovery Ring display bento */}
@@ -1812,17 +1710,6 @@ export default function App() {
 
               </div>
             )}
-
-            {/* iOS Bottom Physical Home Bar Overlay */}
-            <div className="absolute bottom-1 w-[130px] h-[5px] bg-slate-900 rounded-full left-1/2 -translate-x-1/2 z-50 pointer-events-none"></div>
-
-          </div>
-        </section>
-
-        {/* RIGHT COLUMN: Senior Product Designer Spec & Design Guidelines */}
-        <section className="w-full lg:w-[480px] bg-slate-50 dark:bg-slate-950 border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-800 p-6 overflow-y-auto shrink-0">
-          <ScreenSpecUI activeScreen={currentScreen} />
-        </section>
 
       </div>
 
